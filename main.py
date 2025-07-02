@@ -9,7 +9,7 @@ processes = {}
 
 auto_stop_task = None
 
-AUTO_STOP_SECONDS = 10 * 3600
+AUTO_STOP_SECONDS = 6 * 3600
 
 async def auto_stop(context: ContextTypes.DEFAULT_TYPE):
     global processes, auto_stop_task
