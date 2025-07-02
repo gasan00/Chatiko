@@ -1,13 +1,9 @@
-name: Run Bot Twice Daily
+name: Run Bot Continuously
 
 on:
   schedule:
-    # Первый запуск в 20:00 МСК (17:00 UTC)
-    - cron: '0 17 * * *'
-    # Второй запуск в 02:00 МСК (23:00 UTC)
-    - cron: '0 23 * * *'
-
-  workflow_dispatch:  # на всякий случай — ручной запуск
+    - cron: '0 */6 * * *'  # каждые 6 часов
+  workflow_dispatch:       # ручной запуск по кнопке в GitHub
 
 jobs:
   run-bot:
@@ -33,3 +29,4 @@ jobs:
           YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
           TWITCH_CHANNEL: ${{ secrets.TWITCH_CHANNEL }}
         run: python3 main.py
+
