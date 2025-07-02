@@ -1,34 +1,35 @@
-name: Run Telegram Stream Bot
+name: Run Bot Twice Daily
 
 on:
-  workflow_dispatch:  # запуск вручную
+  schedule:
+    # Первый запуск в 20:00 МСК (17:00 UTC)
+    - cron: '0 17 * * *'
+    # Второй запуск в 02:00 МСК (23:00 UTC)
+    - cron: '0 23 * * *'
+
+  workflow_dispatch:  # на всякий случай — ручной запуск
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
 
-    env:
-      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-      TWITCH_BOT_TOKEN: ${{ secrets.TWITCH_BOT_TOKEN }}
-      YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
-      TWITCH_CHANNEL: ${{ secrets.TWITCH_CHANNEL }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
-      - name: Run the bot
+      - name: Run bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          TWITCH_BOT_TOKEN: ${{ secrets.TWITCH_BOT_TOKEN }}
+          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+          TWITCH_CHANNEL: ${{ secrets.TWITCH_CHANNEL }}
         run: python3 main.py
-
