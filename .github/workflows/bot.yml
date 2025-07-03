@@ -1,9 +1,8 @@
 name: Run Bot Continuously
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'  # каждые 6 часов
-  workflow_dispatch:       # ручной запуск по кнопке в GitHub
+  workflow_dispatch:       # ручной запуск
+  repository_dispatch:     # запуск через внешний cron по API GitHub
 
 concurrency:
   group: bot-continuous-group
